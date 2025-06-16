@@ -5,7 +5,7 @@ This repository contains my submission for the Data Engineer technical assessmen
 
 ## 📌 Test Objective:
 
-- This assignment is designed to:
+This assignment is designed to:
 
 - Evaluate your proficiency in using GenAI tools (e.g., Cursor, Windsurf, Claude, etc.) for technical documentation and planning
 - Assess your understanding of complex infrastructure and data engineering concepts

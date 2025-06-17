@@ -212,6 +212,8 @@ title: report_a06_rapid_analytics_solution
 
 ## Conclusion
 
+---
+
 With this plan, we are able to implement a **temporary analytics pipeline** that:
 
 - Supports business needs while the company’s full data platform is still under development  

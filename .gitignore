@@ -1,0 +1,11 @@
+# Ignore everything
+__MACOSX/
+ctx_doc_style.md
+ctx_doc_style.pdf
+test_data_engineer_devops_genai.pdf
+
+
+# But do not ignore these files/folders
+!.gitignore
+!README.md
+!A06/

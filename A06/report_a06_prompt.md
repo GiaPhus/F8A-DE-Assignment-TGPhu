@@ -2,8 +2,7 @@
 title: report_a06_prompt
 ---
 
----
-## Prompt : "Tôi định dùng Data Fusion + Pub/Sub + Dataflow cho ingest, BigQuery + GCS để warehouse, Looker để visualize. Có hợp lý chưa?"
+### Prompt : "Tôi định dùng Data Fusion + Pub/Sub + Dataflow cho ingest, BigQuery + GCS để warehouse, Looker để visualize. Có hợp lý chưa?"
 <details - open>
 <summary>Initial architecture proposal for rapid analytics solution</summary>
 
@@ -23,8 +22,8 @@ title: report_a06_prompt
 ---
 </details>
 
----
-## Prompt : "Tôi có một giải pháp khác là dùng NiFi + PostgreSQL + DBT Core + Metabase? thì nó khác gì với giải pháp trên không"
+
+### Prompt : "Tôi có một giải pháp khác là dùng NiFi + PostgreSQL + DBT Core + Metabase? thì nó khác gì với giải pháp trên không"
 <details - open>
 <summary>Comparison between GCP-native stack and open-source alternative</summary>
 
@@ -48,8 +47,8 @@ title: report_a06_prompt
 ---
 </details>
 
----
-## Prompt : "Tôi cần hệ thống có thể triển khai trong 2 tuần, và sẽ được thay thế bằng pipeline chính sau 3 tháng"
+
+### Prompt : "Tôi cần hệ thống có thể triển khai trong 2 tuần, và sẽ được thay thế bằng pipeline chính sau 3 tháng"
 <details - open>
 <summary>Time constraint and future migration consideration</summary>
 
@@ -68,8 +67,8 @@ title: report_a06_prompt
 ---
 </details>
 
----
-## Prompt : "Nhưng A06 không có data source cụ thể thì visualize và build pipeline sao được?"
+
+### Prompt : "Nhưng A06 không có data source cụ thể thì visualize và build pipeline sao được?"
 <details - open>
 <summary>Clarification on deliverables despite missing data</summary>
 
@@ -88,8 +87,8 @@ title: report_a06_prompt
 ---
 </details>
 
----
-## Prompt : "Khi nào thì nên dùng Pub/Sub kết hợp với Dataflow?"
+
+### Prompt : "Khi nào thì nên dùng Pub/Sub kết hợp với Dataflow?"
 <details - open>
 <summary>Streaming use case for Pub/Sub + Dataflow combo</summary>
 
@@ -106,8 +105,8 @@ title: report_a06_prompt
 ---
 </details>
 
----
-## Prompt : "Phần Key Terms có cần không?"
+
+### Prompt : "Phần Key Terms có cần không?"
 <details - open>
 <summary>Clarify whether to keep the Key Terms section</summary>
 
@@ -124,8 +123,8 @@ title: report_a06_prompt
 ---
 </details>
 
----
-## Prompt : "Tiếp theo tôi nghĩ nên phân tích Development Phases cho dự án"
+
+### Prompt : "Tiếp theo tôi nghĩ nên phân tích Development Phases cho dự án"
 <details - open>
 <summary>Phân tích các giai đoạn triển khai giải pháp phân tích nhanh</summary>
 
@@ -145,8 +144,8 @@ title: report_a06_prompt
 ---
 </details>
 
----
-## Prompt : "Tiếp theo tôi nghĩ nên phân tích Development Phases cho dự án"
+
+### Prompt : "Tiếp theo tôi nghĩ nên phân tích Development Phases cho dự án"
 <details open>
 <summary>Phân tích các giai đoạn triển khai giải pháp phân tích nhanh</summary>
 
@@ -166,8 +165,8 @@ title: report_a06_prompt
 ---
 </details>
 
----
-## Prompt: "Vẽ Flowchart, Gantt chart, Sequence diagram cụ thể cho flow tôi nói ở trên (Data Fusion + Pub/Sub + Dataflow cho ingest, BigQuery + GCS để warehouse, Looker để visualize)"
+
+### Prompt: "Vẽ Flowchart, Gantt chart, Sequence diagram cụ thể cho flow tôi nói ở trên (Data Fusion + Pub/Sub + Dataflow cho ingest, BigQuery + GCS để warehouse, Looker để visualize)"
 <details - open>
 <summary>Sample diagrams for the flow </summary>
 ---
@@ -243,8 +242,8 @@ sequenceDiagram
 </details>
 
 
----
-## Prompt: "Tóm lại giá trị đạt được từ plan này (không nói về low-code hay công nghệ cụ thể)"
+
+### Prompt: "Tóm lại giá trị đạt được từ plan này (không nói về low-code hay công nghệ cụ thể)"
 
 <details open>
 <summary>Summary of business value from this temporary pipeline</summary>

@@ -13,6 +13,7 @@ title: report_a06_rapid_analytics_solution
 
 <details open>
 <summary>Plain-language explanations of technologies and components used in this solution</summary>
+
 ---
 
 - **Data Fusion**
@@ -41,16 +42,18 @@ title: report_a06_rapid_analytics_solution
 - **Dashboard**  
   - A visual report with charts and tables that summarize key business information  
   - Helps teams make decisions based on current data  
+
 ---
+
 </details>
 
 
 ## System Architecture
----
 
 ### Data Sources
 <details open>
 <summary>Overview of batch and streaming data origins</summary>
+
 ---
 
 - **Batch sources** such as exported CSV files from internal tools, CRM systems, or external vendors.
@@ -80,6 +83,7 @@ title: report_a06_rapid_analytics_solution
 ### Storage and Analytics Layer
 <details open>
 <summary>BigQuery as the central warehouse for batch and streaming</summary>
+
 ---
 
 - The core data warehouse is **BigQuery**, where both batch and streaming data converge.
@@ -97,6 +101,7 @@ title: report_a06_rapid_analytics_solution
 ### Visualization Layer
 <details open>
 <summary>Dashboards in Looker Studio using live BigQuery data</summary>
+
 ---
 
 - **Looker Studio** connects directly to BigQuery to build interactive dashboards.
@@ -108,6 +113,7 @@ title: report_a06_rapid_analytics_solution
 ### Flexibility & Change Accommodation
 <details open>
 <summary>System flexibility and long-term integration potential</summary>
+
 ---
 
 - Using **external tables** from GCS ensures flexibility in case schemas evolve.
@@ -115,7 +121,6 @@ title: report_a06_rapid_analytics_solution
 - The whole system is modular, so each component (ingestion, storage, visualization) can be replaced or upgraded individually.
 ---
 </details>
----
 
 ## Planning 
 ---
@@ -193,7 +198,6 @@ title: report_a06_rapid_analytics_solution
 </details>
 
 ---
-
 ## Conclusion
 
 With this plan, we are able to implement a **temporary analytics pipeline** that:

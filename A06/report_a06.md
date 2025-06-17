@@ -47,6 +47,7 @@ title: report_a06_rapid_analytics_solution
 
 </details>
 
+---
 
 ## System Architecture
 
@@ -95,7 +96,9 @@ title: report_a06_rapid_analytics_solution
 ---
 #### For streaming data:
 - Dataflow loads data directly into BigQuery managed tables with append-only strategy.
+
 ---
+
 </details>
 
 ### Visualization Layer
@@ -107,7 +110,9 @@ title: report_a06_rapid_analytics_solution
 - **Looker Studio** connects directly to BigQuery to build interactive dashboards.
 - Business users can filter views, track KPIs, monitor trends, and create custom charts without needing SQL knowledge.
 - Dashboards are updated in near-real-time depending on streaming latency and refresh policies.
+
 ---
+
 </details>
 
 ### Flexibility & Change Accommodation
@@ -123,6 +128,8 @@ title: report_a06_rapid_analytics_solution
 ---
 
 </details>
+
+---
 
 ## Planning 
 ---
@@ -213,3 +220,4 @@ With this plan, we are able to implement a **temporary analytics pipeline** that
 
 This approach ensures that important data-driven decisions are not delayed, and that teams can begin working with real data immediately—even before the final infrastructure is ready.
 
+---

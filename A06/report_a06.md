@@ -11,7 +11,7 @@ title: report_a06_rapid_analytics_solution
 
 ### Key Terms for Understanding the Overall System
 
-<details open>
+<details - open>  
 <summary>Plain-language explanations of technologies and components used in this solution</summary>
 
 ---
@@ -52,7 +52,7 @@ title: report_a06_rapid_analytics_solution
 ## System Architecture
 
 ### Data Sources
-<details open>
+<details - open>  
 <summary>Overview of batch and streaming data origins</summary>
 
 ---
@@ -63,7 +63,7 @@ title: report_a06_rapid_analytics_solution
 </details>
 
 ### Ingestion Layer
-<details open>
+<details - open>  
 <summary>Batch and streaming pipelines using Data Fusion and Pub/Sub</summary>
 
 ---
@@ -82,7 +82,7 @@ title: report_a06_rapid_analytics_solution
 </details>
 
 ### Storage and Analytics Layer
-<details open>
+<details - open>  
 <summary>BigQuery as the central warehouse for batch and streaming</summary>
 
 ---
@@ -102,7 +102,7 @@ title: report_a06_rapid_analytics_solution
 </details>
 
 ### Visualization Layer
-<details open>
+<details - open>  
 <summary>Dashboards in Looker Studio using live BigQuery data</summary>
 
 ---
@@ -116,7 +116,7 @@ title: report_a06_rapid_analytics_solution
 </details>
 
 ### Flexibility & Change Accommodation
-<details open>
+<details - open>  
 <summary>System flexibility and long-term integration potential</summary>
 
 ---
@@ -135,7 +135,7 @@ title: report_a06_rapid_analytics_solution
 ---
 
 ### Development Phases  
-<details open>  
+<details - open>  
 <summary>Two-week plan to implement a rapid analytics system</summary>  
 
 ---  

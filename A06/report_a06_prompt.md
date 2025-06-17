@@ -169,6 +169,7 @@ title: report_a06_prompt
 ### Prompt: "Vẽ Flowchart, Gantt chart, Sequence diagram cụ thể cho flow tôi nói ở trên (Data Fusion + Pub/Sub + Dataflow cho ingest, BigQuery + GCS để warehouse, Looker để visualize)"
 <details - open>
 <summary>Sample diagrams for the flow </summary>
+
 ---
 
 #### Flowchart (Mermaid)

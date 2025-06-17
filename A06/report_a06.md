@@ -119,7 +119,9 @@ title: report_a06_rapid_analytics_solution
 - Using **external tables** from GCS ensures flexibility in case schemas evolve.
 - **Looker dashboards** are easy to reconfigure, enabling business teams to adjust to changing needs quickly.
 - The whole system is modular, so each component (ingestion, storage, visualization) can be replaced or upgraded individually.
+
 ---
+
 </details>
 
 ## Planning 
@@ -128,6 +130,7 @@ title: report_a06_rapid_analytics_solution
 ### Development Phases  
 <details open>  
 <summary>Two-week plan to implement a rapid analytics system</summary>  
+
 ---  
 
 #### Week 1: Foundation for Ingestion and Storage  
@@ -195,9 +198,11 @@ title: report_a06_rapid_analytics_solution
 - Gather feedback from business team and iterate  
 
 ---
+
 </details>
 
 ---
+
 ## Conclusion
 
 With this plan, we are able to implement a **temporary analytics pipeline** that:

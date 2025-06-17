@@ -275,6 +275,15 @@ title: report_a06_rapid_analytics_solution
 
 ---
 
+## Basic setup and configuration guide 
+
+---
+
+## Migration planning
+
+---
+
+
 ## Conclusion
 
 ---

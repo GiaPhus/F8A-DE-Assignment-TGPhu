@@ -24,7 +24,7 @@ title: report_a06_prompt
 </details>
 
 ---
-## Prompt 2: "Tôi có một giải pháp khác là dùng NiFi + PostgreSQL + DBT Core + Metabase? thì nó khác gì với giải pháp trên không"
+## Prompt : "Tôi có một giải pháp khác là dùng NiFi + PostgreSQL + DBT Core + Metabase? thì nó khác gì với giải pháp trên không"
 <details - open>
 <summary>Comparison between GCP-native stack and open-source alternative</summary>
 
@@ -124,3 +124,140 @@ title: report_a06_prompt
 ---
 </details>
 
+---
+## Prompt : "Tiếp theo tôi nghĩ nên phân tích Development Phases cho dự án"
+<details - open>
+<summary>Phân tích các giai đoạn triển khai giải pháp phân tích nhanh</summary>
+
+---
+- **GenAI Answer:**
+  - Đồng ý, phần tiếp theo nên trình bày **Development Phases** để phản ánh quá trình triển khai hệ thống từ tạm thời đến hoàn chỉnh.
+  - Các giai đoạn nên gồm:
+    - **Phase 1 – Foundation:** thiết lập pipeline ingest batch, dựng schema BigQuery, tạo bảng tạm
+    - **Phase 2 – Streaming:** tích hợp Pub/Sub + Dataflow, cập nhật dữ liệu realtime, validate với dashboard test
+    - **Phase 3 – Business Readiness:** kết nối Looker Studio, publish dashboard đầu tiên, training người dùng
+    - **Phase 4 – Operational Stability:** thêm monitoring, alerting, chuẩn hóa schema, chuẩn bị handover sang full data team
+  - Mỗi giai đoạn nên có deliverable rõ ràng và cho thấy cách giải pháp mở rộng dần theo nhu cầu.
+
+- **Goal:**
+  - Thể hiện khả năng triển khai giải pháp theo mô hình iterative và modular, từ đó dễ kiểm soát tiến độ và đảm bảo giá trị liên tục cho phía business.
+
+---
+</details>
+
+---
+## Prompt : "Tiếp theo tôi nghĩ nên phân tích Development Phases cho dự án"
+<details open>
+<summary>Phân tích các giai đoạn triển khai giải pháp phân tích nhanh</summary>
+
+---
+- **GenAI Answer:**
+  - Đồng ý, phần tiếp theo nên trình bày **Development Phases** để phản ánh quá trình triển khai hệ thống từ tạm thời đến hoàn chỉnh.
+  - Các giai đoạn nên gồm:
+    - **Phase 1 – Foundation:** thiết lập pipeline ingest batch, dựng schema BigQuery, tạo bảng tạm
+    - **Phase 2 – Streaming:** tích hợp Pub/Sub + Dataflow, cập nhật dữ liệu realtime, validate với dashboard test
+    - **Phase 3 – Business Readiness:** kết nối Looker Studio, publish dashboard đầu tiên, training người dùng
+    - **Phase 4 – Operational Stability:** thêm monitoring, alerting, chuẩn hóa schema, chuẩn bị handover sang full data team
+  - Mỗi giai đoạn nên có deliverable rõ ràng và cho thấy cách giải pháp mở rộng dần theo nhu cầu.
+
+- **Goal:**
+  - Thể hiện khả năng triển khai giải pháp theo mô hình iterative và modular, từ đó dễ kiểm soát tiến độ và đảm bảo giá trị liên tục cho phía business.
+
+---
+</details>
+
+---
+## Prompt: "Vẽ Flowchart, Gantt chart, Sequence diagram cụ thể cho flow tôi nói ở trên (Data Fusion + Pub/Sub + Dataflow cho ingest, BigQuery + GCS để warehouse, Looker để visualize)"
+<details - open>
+<summary>Sample diagrams for the flow </summary>
+---
+
+#### Flowchart (Mermaid)
+
+```
+flowchart TD
+  A1[Internal Tools / CRM / Vendors] --> A2[Batch CSV Files]
+  A3[Apps / Website / IoT Devices] --> A4[Streaming Events]
+  A2 --> B1[Data Fusion (ETL)]
+  B1 --> B2[GCS: Raw Layer]
+  B2 --> B3[GCS: Cleaned Layer]
+  B3 --> B4[BigQuery External Table]
+  A4 --> C1[Pub/Sub Topic]
+  C1 --> C2[Dataflow Streaming Job]
+  C2 --> C3[BigQuery Managed Table]
+  B4 --> D1[BigQuery Analysis Layer]
+  C3 --> D1
+  D1 --> E1[Looker Studio Dashboard]
+  E1 --> F1[Business Users]
+  B1 --> M1[Data Catalog / Schema Registry]
+  C2 --> M1
+```
+
+---
+#### Gantt Chart (Mermaid)
+
+```
+gantt
+  title A06 Rapid Analytics Project Plan
+  dateFormat  YYYY-MM-DD
+  section Planning
+  Define Requirements      :a1, 2025-06-01, 2d
+  Design Architecture      :a2, after a1, 2d
+  section Development
+  Setup GCS + BigQuery     :b1, 2025-06-05, 2d
+  Build Pipelines (Batch)  :b2, after b1, 2d
+  Build Pipelines (Stream) :b3, after b2, 2d
+  section Visualization
+  Build Dashboards         :c1, 2025-06-09, 2d
+  Review & Feedback        :c2, after c1, 1d
+```
+
+---
+#### Sequence Diagram (Mermaid)
+
+```
+sequenceDiagram
+    participant Source as Data Source
+    participant DFusion as Data Fusion
+    participant PubSub as Pub/Sub
+    participant DFlow as Dataflow
+    participant GCS as Google Cloud Storage
+    participant BQ as BigQuery
+    participant Looker as Looker Studio
+
+    %% Batch path
+    Source->>DFusion: Upload batch files (CSV, JSON)
+    DFusion->>GCS: Store files
+    DFusion->>BQ: Register as external table
+
+    %% Streaming path
+    Source->>PubSub: Send streaming events
+    PubSub->>DFlow: Trigger stream pipeline
+    DFlow->>BQ: Load processed data
+
+    %% Visualization
+    BQ->>Looker: Expose data to dashboard
+    Looker->>User: Interactive dashboard for insights
+```
+---
+</details>
+
+
+---
+## Prompt: "Tóm lại giá trị đạt được từ plan này (không nói về low-code hay công nghệ cụ thể)"
+
+<details open>
+<summary>Summary of business value from this temporary pipeline</summary>
+
+---
+
+With this plan, the team can deliver a **temporary data pipeline** that:
+
+- Solves urgent business needs while the company's main data infrastructure is still under development  
+- Supports data analysts in generating actionable insights within **1–2 weeks**, without waiting for the full system  
+- Provides an early version of reporting and KPIs that helps guide decisions during this transitional phase  
+
+This approach ensures that data-driven decision-making **does not have to be blocked** by long infrastructure timelines.
+
+---
+</details>

@@ -148,21 +148,24 @@ title: report_a06_prompt
 
 ```
 flowchart TD
-  A1[Internal Tools / CRM / Vendors] --> A2[Batch CSV Files]
-  A3[Apps / Website / IoT Devices] --> A4[Streaming Events]
-  A2 --> B1[Data Fusion (ETL)]
-  B1 --> B2[GCS: Raw Layer]
-  B2 --> B3[GCS: Cleaned Layer]
-  B3 --> B4[BigQuery External Table]
-  A4 --> C1[Pub/Sub Topic]
-  C1 --> C2[Dataflow Streaming Job]
-  C2 --> C3[BigQuery Managed Table]
-  B4 --> D1[BigQuery Analysis Layer]
-  C3 --> D1
-  D1 --> E1[Looker Studio Dashboard]
-  E1 --> F1[Business Users]
-  B1 --> M1[Data Catalog / Schema Registry]
-  C2 --> M1
+    A[Raw Data Sources]
+
+    %% Batch path
+    A --> B1[Batch CSV]
+    B1 --> C1[Data Fusion]
+    C1 --> D1[GCS - Raw Storage]
+    D1 --> E1[BigQuery - External Table]
+
+    %% Streaming path
+    A --> B2[Streaming Events]
+    B2 --> C2[Pub/Sub]
+    C2 --> D2[Dataflow]
+    D2 --> E2[BigQuery - Streaming Table]
+
+    %% Visualization
+    E1 --> F[Looker Studio]
+    E2 --> F
+
 ```
 
 ---
@@ -231,3 +234,57 @@ This approach ensures that data-driven decision-making **does not have to be blo
 
 ---
 </details>
+
+### Prompt: "After designing the overall pipeline and assuming data is already available in GCS and BigQuery, describe a dashboard implementation plan that enables business-friendly analytics delivery."
+
+<details - open>
+<summary>Dashboard implementation plan – business-friendly analytics interface design</summary>
+
+---
+
+#### Dashboard Tool
+
+- **Looker Studio** is selected as the visualization tool due to:
+  - Seamless integration with **BigQuery** for live data access  
+  - Familiar interface for business users, supporting drag-and-drop charts and tables  
+  - Easy sharing via URLs, embedding into internal portals, and export options  
+
+---
+
+#### Data Connections
+
+- Dashboards connect directly to **BigQuery**, using:
+  - **External tables** referencing files in GCS for raw batch data  
+  - **Native tables** populated by Dataflow (streaming) or Data Fusion (batch) pipelines  
+- Optional: Use of **custom SQL views** or **curated dbt models** when available  
+- Supports real-time or scheduled refresh depending on source  
+
+---
+
+#### Dashboard Structure
+
+- Dashboards are organized into **topic-based sections** aligned with business domains:
+  - **Acquisition** – track new users, campaigns, traffic sources  
+  - **Engagement** – monitor session counts, feature usage, drop-off points  
+  - **Retention** – analyze returning user behavior, churn rate, cohort trends  
+
+---
+
+#### Interactivity and UX
+
+- Provide **filter controls** for time range, platform, region, and user segments  
+- Use **templated layouts** for visual consistency across pages  
+- Highlight key KPIs with **scorecards**, trends with **line/area charts**, and distributions with **bar or pie charts**  
+
+---
+
+#### Access Control and Governance
+
+- Dashboards restricted by **Google Workspace permissions** based on user roles  
+- Version-controlled templates to maintain consistent definitions of metrics  
+- Usage tracking and feedback loops for continuous improvement  
+
+---
+
+</details>
+

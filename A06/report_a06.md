@@ -208,6 +208,71 @@ title: report_a06_rapid_analytics_solution
 
 </details>
 
+
+---
+
+## Dashboard Implementation Plan
+
+---
+
+### Dashboard Design and Rollout Strategy
+<details - open>
+<summary>Plan to design, build, and maintain business-friendly dashboards for rapid analytics</summary>
+---
+
+- **Goals and Business Needs**
+  - Deliver dashboards that offer **fast insights** from batch and streaming data sources
+  - Empower business teams to **explore data independently** without technical support
+  - Support decision-making with **visualizations of up-to-date data**
+
+---
+
+#### Dashboard Tool: Looker Studio
+- Looker Studio is chosen for its **seamless integration** with BigQuery
+- Allows business users to build, share, and interact with live dashboards
+- Enables real-time visualization of:
+  - App installs and user engagement trends
+  - Campaign performance by region or channel
+  - Funnel drop-off and session duration metrics
+
+---
+
+#### Data Connections
+- Dashboards are powered by **direct queries to BigQuery**
+- Support both:
+  - **External tables** (for batch files in GCS)
+  - **Managed tables** (for streaming data from Pub/Sub → Dataflow → BigQuery)
+- Enables **live updating** of dashboard visuals as new data arrives
+
+---
+
+#### Design Principles
+- Follow **consistent visual templates** with branded themes
+- Use **filters** (date range, campaign, region) for interactivity
+- Group KPIs using tabs or sections:
+  - Acquisition
+  - Engagement
+  - Retention
+- Use conditional formatting to highlight anomalies or threshold breaches
+
+---
+
+#### Access and Sharing
+- Dashboards are published with **access control** based on business team roles
+- Links are embedded in internal portals or emailed as snapshots
+- Data source permissions are managed via **BigQuery IAM policies**
+
+---
+
+#### Performance and Maintenance
+- Apply **data extracts** or scheduled refreshes for heavy queries
+- Limit visual complexity to improve load time
+- Assign owners for each dashboard to maintain logic and documentation
+- Use consistent naming: `dashboard_<team>_<purpose>` and version tracking
+
+---
+</details>
+
 ---
 
 ## Conclusion

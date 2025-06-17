@@ -14,6 +14,7 @@ title: report_a06_rapid_analytics_solution
 <details open>
 <summary>Plain-language explanations of technologies and components used in this solution</summary>
 ---
+
 - **Data Fusion**
   - A Google Cloud tool that helps connect and move data from many sources using a simple drag-and-drop interface  
   - Allows building data pipelines **without much coding**  
@@ -51,6 +52,7 @@ title: report_a06_rapid_analytics_solution
 <details open>
 <summary>Overview of batch and streaming data origins</summary>
 ---
+
 - **Batch sources** such as exported CSV files from internal tools, CRM systems, or external vendors.
 - **Streaming sources** like real-time application logs, user activity data, or IoT device events.
 ---
@@ -60,6 +62,7 @@ title: report_a06_rapid_analytics_solution
 <details open>
 <summary>Batch and streaming pipelines using Data Fusion and Pub/Sub</summary>
 ---
+
 #### Batch Ingestion – via Data Fusion
 - Google Cloud **Data Fusion** is used to create visual ETL pipelines that ingest batch files from various sources.
 - These files are stored temporarily or long-term in **Google Cloud Storage (GCS)**.

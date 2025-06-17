@@ -235,7 +235,7 @@ This approach ensures that data-driven decision-making **does not have to be blo
 ---
 </details>
 
-### Prompt: "After designing the overall pipeline and assuming data is already available in GCS and BigQuery, describe a dashboard implementation plan that enables business-friendly analytics delivery."
+### Prompt: "After designing the overall pipeline and assuming data is already available in GCS and BigQuery, describe a dashboard implementation plan that enables business-friendly analytics delivery (Dashboard Tool, Connections,...)."
 
 <details - open>
 <summary>Dashboard implementation plan – business-friendly analytics interface design</summary>

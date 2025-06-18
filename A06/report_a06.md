@@ -635,13 +635,13 @@ LIMIT 10;
 
 ## Migration Planning
 <details open>
-<summary>Refactor pipeline from temporary setup (A06) to production-grade architecture</summary>
+<summary>Refactor pipeline from temporary setup to production-grade architecture</summary>
 
 ---
 
-### Why the A06 Architecture is Only Temporary
+### Why this architecture is Only Temporary
 
-| Component               | Current (A06 - Temporary)                                              | Issues                                                                 |
+| Component               | Current (Temporary)                                              | Issues                                                                 |
 |-------------------------|------------------------------------------------------------------------|------------------------------------------------------------------------|
 | **Batch Ingestion**     | Cloud Data Fusion → GCS → BQ External Table → CTAS                    | ❌ Hard to test, no version ,lacks orchestration, hard to customize
 | **Streaming Ingestion** | Pub/Sub → Dataflow → BigQuery Native Table                            | ⚠️ Usable but lacks schema validation, alerting, DLQ                  |

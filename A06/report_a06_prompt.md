@@ -374,4 +374,232 @@ This approach ensures that data-driven decision-making **does not have to be blo
 ---
 </details>
 
+### Prompt: "Set up Looker and write markdown style"
+<details - open>
+<summary>Instructions for Looker Studio setup after data ingestion (Batch + Streaming)</summary>
 
+---
+
+#### Looker Studio Setup
+
+- **Purpose**: Create interactive dashboards from both batch and streaming data stored in BigQuery.
+
+#### Prerequisites
+- Ensure batch and streaming pipelines have written data to **BigQuery native tables**.
+- Confirm `BigQuery` dataset permissions allow access from `Looker Studio`.
+- Use **partitioned tables** or **materialized views** for efficient querying in Looker.
+
+---
+
+#### Steps to Connect BigQuery to Looker Studio
+
+- Go to [Looker Studio](https://lookerstudio.google.com/) and click **“Blank Report”**.
+- Click **Add Data** → Choose **BigQuery**.
+- Authenticate using your Google account and select the correct project.
+- Navigate to your dataset and select:
+  - Batch: the native table created via CTAS or ingestion.
+  - Streaming: the partitioned table populated by Dataflow or Pub/Sub.
+- Click **Add** → The table is now available in Looker Studio as a data source.
+
+---
+
+#### Dashboard Design Tips
+
+- Create **separate pages** for batch and streaming views to monitor ingestion flow.
+- Use **filters** (e.g., date, event type) for flexible exploration.
+- Recommended visualizations:
+  - **Time series chart** for event volume over time
+  - **Table view** for debugging raw ingestion
+  - **Pie/bar charts** for distribution insights
+- For streaming freshness, consider showing **last ingestion timestamp** from a metadata column.
+
+---
+
+#### Access and Sharing
+
+- Set viewer credentials to **“Viewer’s credentials”** or **“Owner’s credentials”** depending on security.
+- Share dashboard with team members via link or embed in Confluence/Notion.
+
+---
+</details>
+
+
+### Prompt: "Chi tiết hóa Bronze, Silver, Gold layer cho transformation và modeling"
+<details - open>
+<summary>Multi-layered transformation plan after batch & streaming ingestion</summary>
+
+---
+
+#### Bronze Layer – Raw Ingested Data
+
+- **Objective**: Persist raw data as-is from ingestion sources.
+- **Batch**:
+  - Data landed in **GCS** by **Data Fusion**.
+  - Registered as **external tables** in **BigQuery** using file paths.
+- **Streaming**:
+  - Real-time data from **Pub/Sub → Dataflow** inserted into **BigQuery native tables**.
+  - Tables should be **partitioned by ingestion time** and optionally clustered by entity IDs.
+
+- **Tools**:
+  - **Data Fusion** (batch), **Dataflow** (streaming)
+  - **BigQuery External Table** (batch)
+  - **BigQuery Native Table** (streaming)
+
+- **Schema Strategy**:
+  - Maintain loose schema at this stage.
+  - Avoid enforcing types too early—keep semi-structured formats like `JSON` for flexibility.
+
+---
+
+#### Silver Layer – Cleaned & Structured Data
+
+- **Objective**: Standardize schema, perform initial transformations, type casting, and de-duplication.
+- **Batch**:
+  - Use **CTAS** (Create Table As Select) or **scheduled queries** to create native BigQuery tables.
+  - Clean using **BigQuery SQL**, **Spark on Dataproc**, or **DataPrep** if available.
+- **Streaming**:
+  - Use **materialized views** or **scheduled queries** to clean streaming data.
+  - Partition output tables for performance (e.g., by `event_date` or `user_id`).
+
+- **Transformations**:
+  - Parse `JSON` payloads into structured columns.
+  - Enrich with reference data (e.g., dimension tables in BigQuery).
+  - Remove duplicates via `ROW_NUMBER()` or `ARRAY_AGG` de-dupe logic.
+
+- **Tools**:
+  - **BigQuery SQL** (primary)
+  - **Trino** (if warehouse-agnostic and no cost impact)
+  - **Spark** (if cleaning is complex or needs distributed processing)
+
+---
+
+#### Gold Layer – Business-Facing Models
+
+- **Objective**: Serve reporting needs with curated, aggregated tables.
+- **Transformations**:
+  - Compute KPIs, metrics, and aggregates.
+  - Build dimensional models like `fact_sales`, `dim_customer`, `fact_events`.
+  - Include business logic like status mappings, calculated fields.
+
+- **Batch**:
+  - Use **DBT** or **modular SQL** for transformation pipelines.
+  - Schedule jobs to refresh Gold tables daily or hourly.
+- **Streaming**:
+  - Use **materialized views** with smart refresh settings.
+  - If latency is critical, use **streaming inserts** into pre-aggregated tables.
+
+- **Tools**:
+  - **BigQuery SQL**, **DBT (modular, version-controlled)**
+  - **Looker Studio** to visualize directly from Gold tables
+  - Optional: **Dataform** or **Cloud Composer** for orchestration
+
+---
+
+#### Notes on Tooling Evolution
+
+- Start with **BigQuery SQL** for all transformations.
+- Once the modeling logic stabilizes, **migrate to DBT** for:
+  - Reusability
+  - Modularity
+  - Testing and documentation
+- DBT structure recommendation:
+  - `staging/` → Silver layer
+  - `marts/` → Gold layer
+  - `sources/` → Bronze definitions
+
+---
+</details>
+
+### Prompt: "Design a Migration Plan from a temporary architecture to a production-ready pipeline with versioning, testing, CI/CD, and DBT transformations"
+
+<details open>
+<summary>Refactor pipeline from temporary setup (Fusion, CTAS, Looker Studio) to production-grade architecture using Airflow + DBT + BigQuery</summary>
+
+---
+
+#### 🟠 Temporary Architecture Overview
+
+- **Batch Ingestion**:  
+  - Data Sources (API/File) → **Cloud Data Fusion** → GCS → External Table → CTAS to create native BigQuery tables (Silver/Gold)
+- **Streaming Ingestion**:  
+  - Pub/Sub → Dataflow → BigQuery native table
+- **Data Warehouse**: BigQuery
+- **Dashboard**: Looker Studio connected directly to BigQuery
+
+**Limitations of the Temporary Setup:**
+- **Cloud Data Fusion** lacks version control, testing capabilities, and is hard to debug or customize.
+- Using **CTAS directly** in BigQuery leads to unmodularized SQL, hard to test or reuse.
+- No **schema validation**, **data lineage**, or formal testing process.
+- Dashboards rely on live querying without performance tuning or semantic modeling.
+
+**Tôi nghĩ nên chuyển Fusion thành Airflow** để dễ dàng kiểm soát pipeline, customize logic, và tích hợp CI/CD.
+
+---
+
+#### ✅ Migration Goals
+
+- **Replace Fusion with Airflow (or Cloud Composer)**:  
+  - Customizable pipelines with Python.
+  - Enables modular DAGs, testing, alerting, and orchestration.
+- **Streaming Layer Enhancements**:  
+  - Keep Pub/Sub → Dataflow but add:
+    - Schema control with validation logic.
+    - Dead-letter queues (DLQ) and monitoring via Stackdriver or OpenTelemetry.
+- **Data Transformation via DBT**:
+  - Organize into **Bronze → Silver → Gold** layers.
+  - Modular SQL with `staging/`, `intermediate/`, and `marts/` folders.
+  - Supports testing (`dbt test`), schema validation, documentation (`dbt docs`).
+- **CI/CD Integration**:
+  - Use GitHub Actions or Cloud Build for:
+    - DBT model testing
+    - Deployment to production
+    - Code versioning and rollback
+- **Dashboard Upgrade**:
+  - Option 1: Keep **Looker Studio** temporarily if acceptable.
+  - Option 2: Migrate to **Looker** with LookML for:
+    - Reusable semantic models
+    - Access control
+    - Governed metrics layer
+- **Governance & Monitoring**:
+  - Add **dbt docs**, **BigQuery schema registry**, and metadata tagging.
+  - Monitor pipelines via **Airflow logs**, **dbt test results**, **BQ job history**.
+
+---
+
+#### 🔁 Final Architecture Highlights
+
+- **Ingestion**:
+  - Batch: API/File → Airflow DAG → GCS/BigQuery Raw
+  - Streaming: Pub/Sub → Dataflow → BQ (with schema validation)
+
+- **Transformation**:
+  - All modeling handled by **DBT** (Bronze → Silver → Gold)
+  - Scheduled runs via **Airflow**
+
+- **Warehouse**:
+  - Stay with **BigQuery** as the main warehouse due to:
+    - Serverless architecture
+    - Seamless integration with GCP ecosystem
+    - Support for materialized views and partitions
+
+- **Visualization**:
+  - Directly connect **Looker/Looker Studio** to Gold tables
+  - Use partitioned/mart-level tables for efficient dashboarding
+
+---
+
+This migration plan ensures modularity, observability, and scalability across the full data pipeline lifecycle.
+</details>
+
+### Prompt: "I think we should replace Fusion with Airflow"
+
+<details open>
+<summary>Justification for replacing Cloud Data Fusion with Apache Airflow</summary>
+
+---
+
+- **I think we should replace Fusion with Airflow** because:
+  - Airflow provides **more flexibility** in defining pipelines using Python.
+  - It supports **version control** via Git and integrates well with CI/CD workflows.
+  - It allows easy integration of **schema validation, alerting, and logging** steps.
+  - It offers **clear dependency management**, making pipeline behavior more predictable and maintainable.

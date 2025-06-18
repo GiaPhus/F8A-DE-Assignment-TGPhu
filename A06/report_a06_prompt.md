@@ -288,3 +288,90 @@ This approach ensures that data-driven decision-making **does not have to be blo
 
 </details>
 
+### Prompt: "Set up data ingestion for batch on GCP using Data Fusion following step (Create bucket,Set up environment,Deploy Fusion,...) "
+<details - open>
+<summary>Batch ingestion setup using Data Fusion, GCS, and BigQuery</summary>
+
+---
+
+- **Enable APIs**:
+  - Activate the following APIs on GCP: Cloud Data Fusion, Cloud Storage, BigQuery, and optionally IAM for access management.
+
+- **Create GCS Bucket**:
+  - Navigate to GCS → create a new bucket (`a06-batch-data` or similar).
+  - Choose the same region as your Data Fusion instance.
+  - Set access controls depending on project scope (fine-grained or uniform).
+
+- **Prepare Sample Data**:
+  - Upload a `.csv` or `.json` file to a subfolder in your bucket (e.g., `a06-batch-data/source1/data.csv`).
+
+- **Deploy Data Fusion Instance**:
+  - Go to Data Fusion → create instance (`basic` edition is sufficient).
+  - Choose the same region as GCS and BigQuery to avoid egress costs.
+  - Wait for the instance to become available (status: `RUNNING`).
+
+- **Design Batch Pipeline**:
+  - Open the instance → go to `Wrangler` or `Studio`.
+  - Source: GCS → specify path to uploaded file.
+  - Optional: Add transformation nodes like Wrangler or Expression Evaluator.
+  - Sink: BigQuery → select or create dataset/table.
+  - Choose “Create External Table” if you want speed; “Ingest to Native Table” if you want direct loading.
+
+- **Run and Monitor**:
+  - Deploy the pipeline.
+  - Trigger a manual run (or schedule if required).
+  - Monitor in Cloud Data Fusion UI or through GCP Logging.
+
+- **Validation**:
+  - Go to BigQuery → query the table to verify records loaded correctly.
+  - Share with Looker Studio (optional) for dashboard setup.
+
+---
+</details>
+
+### Prompt: "Streaming ingestion setup (Pub/Sub setup, Create table BQ, Dataflow Streaming Job...)"
+<details - open>
+<summary>Streaming ingestion setup using Pub/Sub, Dataflow, and BigQuery</summary>
+
+---
+
+- **Enable APIs**:
+  - Ensure Pub/Sub, Dataflow, and BigQuery APIs are enabled for the project.
+
+- **Create Pub/Sub Topic**:
+  - Go to Pub/Sub → create a new topic (e.g., `a06-realtime-events`).
+  - You can create a subscription later or let Dataflow handle it.
+
+- **Create BigQuery Table**:
+  - Go to BigQuery → create a dataset (e.g., `a06_streaming_ds`).
+  - Inside the dataset, create a **native table** (e.g., `streamed_events`) with schema matching the streaming messages.
+  - If using JSON messages, align fields accordingly.
+
+- **Build Streaming Pipeline with Dataflow**:
+  - Use Dataflow templates or custom jobs (in Java/Python via Apache Beam).
+  - For quick setup, use the "Pub/Sub to BigQuery" template:
+    - Go to Dataflow → "Create Job from Template"
+    - Template: `Pub/Sub Subscription to BigQuery`
+    - Input: Pub/Sub topic or subscription
+    - Output Table: `project_id:a06_streaming_ds.streamed_events`
+
+- **Run and Monitor the Job**:
+  - Launch the job.
+  - Go to Dataflow dashboard to monitor pipeline health, throughput, and latency.
+
+- **Test the Setup**:
+  - Publish test messages to the Pub/Sub topic using `gcloud` or the Pub/Sub UI.
+  - Example:
+    ```bash
+    gcloud pubsub topics publish a06-realtime-events --message='{"event_id": "1", "type": "click"}'
+    ```
+  - Query the BigQuery table to confirm data arrival.
+
+- **Optional Enhancements**:
+  - Add transformation logic with Apache Beam (e.g., timestamp parsing, deduplication).
+  - Integrate with Looker Studio for real-time dashboards.
+
+---
+</details>
+
+

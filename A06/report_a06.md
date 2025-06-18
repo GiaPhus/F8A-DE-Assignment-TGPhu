@@ -140,6 +140,8 @@ title: report_a06_rapid_analytics_solution
 ## Planning 
 ---
 
+![Gantt_chart](diagrams/Gantt_chart.png)
+
 ### Development Phases  
 <details - open>  
 <summary>Two-week plan to implement a rapid analytics system</summary>  

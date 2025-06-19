@@ -1,5 +1,5 @@
 ---
-title: report_a06_rapid_analytics_solution
+title: report_a06
 ---
 ---
 ## Summary

@@ -11,9 +11,3 @@ test_data_engineer_devops_genai.pdf
 !A06/
 
 qdrant_data/
-
-# Ignore Jupyter notebook checkpoints
-notebooks/.ipynb_checkpoints/
-
-# Ignore Python cache
-streamlit/__pycache__/

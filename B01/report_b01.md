@@ -378,10 +378,20 @@ title: report_b01
       }
     }
     ```
-  - **List collections**:
-    ```http
-    GET /collections
-    ```
+  - **Update a Collection**  
+    - Enable features like **on-disk vector storage** for better memory efficiency  
+    - Useful for large-scale, resource-constrained deployments  
+    - Example:
+      ```json
+      PATCH /collections/my_collection
+      {
+        "vectors": {
+          "": {
+            "on_disk": true
+          }
+        }
+      }
+      ```
   - **Get collection info**:
     ```http
     GET /collections/my_collection

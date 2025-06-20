@@ -544,21 +544,170 @@ title: report_b01
 
 ---
 
-
-
 </details>
 
 ## Deployment and Setup
 
+### Deployment Options
 <details - open>  
-<summary></summary>
+<summary>Available methods to deploy Qdrant locally or in production</summary>
 
 ---
 
+- **Docker (Recommended for quick start)**
+  - Easiest way to get Qdrant up and running in seconds
+  - Example:
+    ```bash
+    docker run -p 6333:6333 qdrant/qdrant
+    ```
+
+- **Precompiled Binaries**
+  - Download directly from [GitHub Releases](https://github.com/qdrant/qdrant/releases)
+  - Suitable for manual setup on Linux-based systems
+
+- **Qdrant Cloud**
+  - Hosted option managed by the Qdrant team
+  - Requires registration at [cloud.qdrant.io](https://cloud.qdrant.io)
+  - Best for production with built-in scaling and snapshots
+
+- **Kubernetes**
+  - For high-availability production workloads
+  - Helm charts available for managing deployment across nodes
 
 ---
 
 </details>
+
+### Docker  
+
+<details - open>  
+<summary>Run Qdrant with Docker for local testing and development</summary>  
+
+---
+
+- The easiest way to start using Qdrant for **testing or development** is to run the Qdrant container image.
+- The latest versions are always available on **DockerHub**.
+- Make sure that **Docker**, **Podman**, or the container runtime of your choice is installed and running.
+- The following instructions use Docker.
+
+- **Pull the image**
+  ```bash
+  docker pull qdrant/qdrant
+  ```
+
+- In the following command, revise `$(pwd)/path/to/data` for your Docker configuration. Then use the updated command to run the container:
+  ```bash
+  docker run -p 6333:6333 \
+    -v $(pwd)/path/to/data:/qdrant/storage \
+    qdrant/qdrant
+  ```
+
+  - With this command, you start a Qdrant instance with the default configuration.
+  - It stores all data in the `./path/to/data` directory.
+  - By default, Qdrant uses port `6333`, so at `localhost:6333` you should see the welcome message.
+
+- **To change the Qdrant configuration, you can overwrite the production configuration**
+  ```bash
+  docker run -p 6333:6333 \
+    -v $(pwd)/path/to/data:/qdrant/storage \
+    -v $(pwd)/path/to/custom_config.yaml:/qdrant/config/production.yaml \
+    qdrant/qdrant
+  ```
+
+- **Alternatively, you can use your own `custom_config.yaml` configuration file**
+  ```bash
+  docker run -p 6333:6333 \
+    -v $(pwd)/path/to/data:/qdrant/storage \
+    -v $(pwd)/path/to/custom_config.yaml:/qdrant/config/custom_config.yaml \
+    qdrant/qdrant \
+    ./qdrant --config-path config/custom_config.yaml
+  ```
+
+---
+</details>
+
+### Docker Compose  
+
+<details - open>  
+<summary>Run Qdrant using Docker Compose for simplified local orchestration</summary>  
+
+---
+
+- Docker Compose allows you to **define and manage multi-container applications** using a simple YAML file.
+- This is useful for **testing and development** setups that require port configuration, volume mounting, and auto-restart.
+
+- Example `docker-compose.yml` file for a single-node Qdrant setup:
+  ```yaml
+  version: '3.8'
+
+  services:
+    qdrant:
+      image: qdrant/qdrant:latest
+      container_name: qdrant
+      restart: always
+      ports:
+        - "6333:6333"
+        - "6334:6334"
+      expose:
+        - "6333"
+        - "6334"
+        - "6335"
+      volumes:
+        - ./qdrant_data:/qdrant/storage
+      configs:
+        - source: qdrant_config
+          target: /qdrant/config/production.yaml
+
+  configs:
+    qdrant_config:
+      content: |
+        log_level: INFO
+  ```
+
+  - Once the file is ready, you can run Qdrant with:
+
+  ```bash
+  docker compose up -d
+  ```
+
+  - This will launch Qdrant at http://localhost:6333, with persistent storage in the ./qdrant_data directory and default logging level set to INFO.
+
+- **Note:**
+  - The `configs` block requires Docker Compose v2.23.1+ and Docker Engine v25.0.0+.
+  - You can adjust the `log_level` and other configuration fields as needed.
+  - Data will be stored persistently in the `./qdrant_data` directory.
+  - You can scale up this setup by expanding the Compose file for **multi-node deployment**, load balancing, and backups.
+
+---
+
+</details>
+
+### Python SDK  
+<details - open>  
+<summary>Use Qdrant's official Python client to interact with the database programmatically</summary>  
+
+---
+
+- Qdrant provides an official Python SDK to make it easy to:
+  - Create and manage collections
+  - Upload and query vectors
+  - Apply filtering, payloads, and metadata
+  - Run similarity and ANN searches
+
+- **Installation**
+  ```bash
+  pip install qdrant-client
+  ```
+
+- The SDK simplifies integration with Python-based apps such as:
+  - AI/ML pipelines (e.g., embedding pipelines)
+  - Retrieval-Augmented Generation (RAG)
+  - Vector-based recommendation systems
+  - Backend services using FastAPI, Flask, or Django
+
+---
+</details>
+
 
 
 ## Implementation Guidance – Practical Usage Examples

@@ -239,3 +239,124 @@ title: report_b01_prompt
 
 ---
 </details>
+### Prompt: "Give a brief explanation of the hardware requirements and two deployment options for Qdrant: Qdrant Cloud and Helm chart (Kubernetes). Then conclude that this report will focus on the simplest setup method — using Docker."
+
+<details - open>  
+<summary>Prompt response for installation methods and rationale for Docker</summary>  
+
+---
+
+- **System Requirements (Summary)**:
+  - **CPU & RAM** depend on:
+    - Number of stored vectors
+    - Vector dimensions
+    - Payload size and index configurations
+    - Whether replication or quantization is enabled
+  - Requires a **64-bit system** (x86_64 or arm64)
+  - Must use **POSIX-compatible block storage** (not object stores like S3)
+
+- **Installation Options**:
+  - **Qdrant Cloud**:
+    - Fully managed production environment
+    - Supports scaling, automatic upgrades, backups, monitoring
+  - **Helm Chart (Kubernetes)**:
+    - Suitable for private cloud or on-prem setups
+    - Requires manual configuration and infrastructure management
+
+- **Decision**:
+  - This tutorial will focus on **Docker-based setup** because:
+    - It is the simplest and fastest option for local development
+    - Great for testing, learning, and rapid prototyping
+    - Does not require cloud infrastructure or Kubernetes knowledge
+
+---
+</details>
+
+
+### Prompt: "I want to include a Docker setup section for Qdrant. Show me the best way to explain why Docker is suitable for development and testing. Then give me full setup commands that follow the ctx_doc_style.md."
+
+<details - open>  
+<summary>Prompt response for Docker setup</summary>  
+
+---
+
+- Docker is recommended for **testing and development** because:
+  - It offers a fast and isolated environment to run Qdrant without full installation
+  - It allows volume mounting for persistent data
+  - Easy to configure ports and update the container
+
+- The setup should include:
+  - Pulling the Docker image from DockerHub
+  - Running the container with `docker run`, volume mounts, and port mappings
+  - Optional configuration with custom YAML using bind mounts
+  - Clear explanations before each command block
+
+---
+</details>
+
+### Prompt: "Write a section for using Qdrant with Python SDK.Follow the ctx_doc_style.md."
+
+<details - open>  
+<summary>Prompt response for Python SDK setup</summary>  
+
+---
+
+- The Python SDK is useful for:
+  - Interacting with Qdrant directly in Python apps
+  - Creating collections, uploading vectors, and searching
+- Installation should be shown using `pip`
+- Include a minimal working example:
+  - Connect to local Qdrant
+  - Create a collection
+  - Upsert vectors
+  - Perform a search
+- Mention relevant real-world use cases like:
+  - RAG
+  - Semantic search
+  - ML pipelines
+- Include SDK documentation reference link
+
+---
+</details>
+
+### Docker Compose
+<details - open>  
+<summary>Using Docker Compose for Qdrant Deployment</summary>  
+
+---
+
+- **Docker Compose** allows you to define and manage multi-container applications with a declarative YAML file.  
+- It is especially useful in development environments for:
+  - Running Qdrant with consistent, repeatable configurations
+  - Organizing service settings, ports, and volumes clearly
+  - Automatically restarting the container upon failure
+  - Simplifying setup without manual command repetition
+
+- Below is a working `docker-compose.yml` example for launching a **single-node Qdrant instance**:  
+  - The configuration uses the `configs:` block to inline the YAML settings directly
+  - Ensure you're using **Docker Compose v2.23.1+** and **Docker Engine v25.0.0+** to support inline config
+  - Data is persisted through a `volume` mounted to `./qdrant_data`
+
+```yaml
+services:
+  qdrant:
+    image: qdrant/qdrant:latest
+    restart: always
+    container_name: qdrant
+    ports:
+      - 6333:6333
+      - 6334:6334
+    expose:
+      - 6333
+      - 6334
+      - 6335
+    configs:
+      - source: qdrant_config
+        target: /qdrant/config/production.yaml
+    volumes:
+      - ./qdrant_data:/qdrant/storage
+
+configs:
+  qdrant_config:
+    content: |
+      log_level: INFO

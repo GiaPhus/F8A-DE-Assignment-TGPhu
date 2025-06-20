@@ -11,6 +11,7 @@ title: report_b01
 
 <details - open>  
 <summary>Purpose and goals of the B01 Vector Database Tutorial task</summary>  
+
 ---
 
 - This report is developed as part of **Task B01 - Vector Database Tutorial**.
@@ -47,6 +48,7 @@ title: report_b01
 
 <details - open>  
 <summary>A vector is a numerical representation of data in high-dimensional space</summary>  
+
 ---
 
 - A **vector** is a list of numerical values, usually floats, representing an object (e.g., sentence, image, audio) in a multi-dimensional space.  
@@ -77,6 +79,7 @@ title: report_b01
 
 <details - open>  
 <summary>Vector embedding is the process of encoding unstructured data into numerical vectors</summary>  
+
 ---
 
 - **Vector embedding** combines the idea of “vector” and “embedding” — it refers to the **resulting vector** produced after embedding data.  
@@ -249,26 +252,98 @@ title: report_b01
 ### Overview of Tools
 
 <details - open>  
-<summary></summary>
+<summary>Overview of major open-source and managed vector database tools</summary>  
 
 ---
 
+- **Qdrant**  
+  - Open-source, written in Rust for high performance  
+  - Offers REST/gRPC APIs, vector + payload filtering  
+  - Optimized for hybrid search (vector + metadata)  
+  - Easy Docker deployment; supports HNSW indexing  
+  - Good documentation and active development community  
+
+- **Pinecone**  
+  - Fully managed vector DB as a service  
+  - No self-hosting; ideal for fast prototyping and scaling  
+  - Advanced indexing behind the scenes, abstracted from user  
+  - Pricing-based tiers; good for teams with cloud-native needs  
+  - Tight integration with OpenAI, LangChain, Cohere, etc.  
+
+- **Weaviate**  
+  - Open-source, GraphQL-native API with strong semantic tooling  
+  - Integrated text vectorizers (Transformers, OpenAI)  
+  - Supports hybrid search and schema definition  
+  - Modular storage backends (in-memory, disk, cloud)  
+  - Built-in support for classification, nearText queries  
+
+- **Milvus**  
+  - High-performance, cloud-native, open-source system  
+  - Optimized for billion-scale vector search  
+  - Supports multiple indexes (IVF, HNSW, Flat, etc.)  
+  - Backed by Zilliz; supports distributed deployments  
+  - Popular choice for production-grade AI applications  
+
+- **FAISS (Facebook AI Similarity Search)**  
+  - Library (not a database) focused on similarity search  
+  - Extremely fast, GPU-accelerated search  
+  - Best for embedding search in custom pipelines  
+  - No persistence layer or API – needs developer integration  
+  - Commonly used to build custom in-memory vector search  
+
+- **ElasticSearch (Vector support)**  
+  - Widely-used full-text search engine with vector capabilities  
+  - Suitable for hybrid text + vector search  
+  - Supports k-NN plugin for vector fields  
+  - Large ecosystem and scalable infrastructure  
+  - Not optimized for ANN; slower than specialized tools  
 
 ---
-
 </details>
-
 
 ### Feature Comparison Table
+
 <details - open>  
-<summary></summary>
+<summary>Compare vector tools by core features and capabilities</summary>  
 
 ---
 
+| **Feature**              | **Qdrant** | **Pinecone** | **Weaviate** | **Milvus** | **FAISS** | **ElasticSearch** |
+|--------------------------|------------|--------------|--------------|------------|-----------|-------------------|
+| Open Source              | ✅         | ❌           | ✅           | ✅         | ✅        | ✅                |
+| Managed Hosting          | ❌         | ✅           | ❌           | ❌         | ❌        | ✅ (self-manage)   |
+| ANN Indexing             | ✅ (HNSW)   | ✅ (auto)     | ✅           | ✅         | ✅        | ✅ (plugin)        |
+| Metadata Filtering       | ✅         | ✅           | ✅           | ✅         | ❌        | ✅                |
+| API Support              | REST/gRPC  | REST         | GraphQL/REST | REST       | ❌        | REST              |
+| Built-in Embedding       | ❌         | ❌           | ✅           | ❌         | ❌        | ❌                |
+| Scalability              | High       | High         | Medium       | High       | High      | High              |
+| Best Use Case            | Hybrid search | Quick deploy | Semantic APIs | Large-scale AI | Custom pipelines | Hybrid + keyword |
 
 ---
-
 </details>
+
+### Use Case Recommendation
+
+<details - open>  
+<summary>Which vector database to use depending on the project context</summary>  
+
+---
+
+| **Use Case**                             | **Recommended Tool(s)**               | **Reason**                                           |
+|------------------------------------------|----------------------------------------|------------------------------------------------------|
+| **Fast prototyping / low setup overhead** | Pinecone                              | Fully managed, no infra needed                      |
+| **Hybrid search (text + vector)**         | Qdrant, Weaviate, ElasticSearch        | Native support for metadata + vector filtering      |
+| **On-premise deployment**                 | Qdrant, Milvus, Weaviate, FAISS        | All open-source with self-hosting options           |
+| **Massive-scale vector search**           | Milvus, FAISS                          | Designed for billion+ vector scale                  |
+| **GPU-accelerated custom workflows**      | FAISS                                  | Best-in-class performance with GPU support          |
+| **Semantic search with built-in models**  | Weaviate                               | Integrated vectorizers like BERT, OpenAI            |
+| **RAG pipelines with OpenAI**             | Pinecone, Qdrant                       | Easy integration with LangChain, OpenAI, Cohere     |
+| **Enterprise search over documents**      | ElasticSearch                          | Text-first with strong ecosystem and vector plugin  |
+
+---
+</details>
+
+--- 
 
 ## Deep Dive on Qdrant
 
@@ -277,6 +352,134 @@ title: report_b01
 <summary></summary>
 
 ---
+
+- Qdrant is a powerful, flexible, and easy-to-deploy vector search engine designed for modern AI applications.  
+- As unstructured data like text, images, and audio becomes central to intelligent systems, vector search has emerged as a key technology — and Qdrant offers a production-ready solution to enable it.
+
+![Qdrant Architecture](diagrams/Qdrant_artchitechture.png)
+
+#### Collections  
+- A **collection** is a named set of points (vectors with optional payloads).  
+- Each collection uses:
+  - A fixed **distance metric** (Cosine, Euclidean, or Dot Product)  
+  - A defined **vector dimensionality**  
+- **Named vectors**: You can store multiple vectors per point, each with different names and settings.
+
+- **Core CRUD operations via HTTP API**:
+  - **Create collection**:
+    ```http
+    PUT /collections/my_collection
+    Content-Type: application/json
+
+    {
+      "vectors": {
+        "size": 300,
+        "distance": "Cosine"
+      }
+    }
+    ```
+  - **List collections**:
+    ```http
+    GET /collections
+    ```
+  - **Get collection info**:
+    ```http
+    GET /collections/my_collection
+    ```
+  - **Delete collection**:
+    ```http
+    DELETE /collections/my_collection
+    ```
+
+- Qdrant also supports **updating collection parameters**, although major settings (like vector size) are immutable.
+
+#### Distance Metrics  
+- Used to measure vector similarity. Must be selected during collection creation.  
+- Options include `Cosine`, `Euclidean`, and `Dot Product`.  
+- The choice depends on how vectors were created (i.e., embedding model or encoder type).
+
+---
+
+#### Points  
+- The central entity in Qdrant, consisting of:
+  - `id`: a unique identifier
+  - `vector`: a high-dimensional representation of raw data
+  - `payload`: additional metadata in JSON format
+
+---
+
+#### Vector  
+- A numerical representation of raw content like **images**, **audio**, **documents**, or **videos**.  
+- Vectors are used for similarity comparison in high-dimensional space.
+
+---
+
+#### Payload  
+- A **JSON object** that stores associated metadata (e.g., category, tags, URL).  
+- Useful for **hybrid search** where filtering conditions apply alongside vector similarity.
+
+---
+
+#### Storage  
+- Qdrant supports two storage options:
+  - **In-memory**: Stores vectors entirely in RAM for fastest access.
+  - **Memmap**: Uses memory-mapped files for lower memory usage and large-scale storage.
+
+---
+
+#### Clients  
+- Qdrant can be used via multiple programming languages:  
+  - `Python`, `Rust`, `Go`, `TypeScript`  
+- APIs include both **REST** and **gRPC**, making integration flexible.
+
+
+#### Filtering  
+- Filtering allows refining vector search using **structured metadata** attached to each point (`payload`).  
+- It is a key feature of **hybrid search**, where filtering conditions are combined with vector similarity.  
+- Filters are defined using **JSON DSL (Domain-Specific Language)**.
+
+- Qdrant supports the following filter operations:
+
+  - **Match**: Exact match of a value
+    - Example: `"color" == "red"`
+
+  - **Match Any**: Field matches any value from a list
+    - Example: `"category" in ["tech", "finance"]`
+
+  - **Match Except**: Exclude certain values
+    - Example: `"author" != "anonymous"`
+
+  - **Nested Key**: Query inside nested JSON structures
+    - Example: `"address.city" == "New York"`
+
+  - **Nested Object Filter**: Apply filter rules inside a nested object block
+    - Useful for complex schemas
+
+  - **Full Text Match**: Case-insensitive partial text matching (like SQL `LIKE`)
+    - Useful for fuzzy keyword matching
+
+  - **Range**: Query numeric values within a range
+    - Example: `"score" > 0.5`
+
+  - **Datetime Range**: Filter by timestamp range
+    - Example: `"created_at" between 2023-01-01 and 2023-06-30"`
+
+  - **UUID Match**: Use for exact UUID equality comparison
+
+  - **Geo**: Filter by geolocation using lat/lon + radius
+    - Example: `within 50km of (10.762622, 106.660172)`
+
+  - **Values Count**: Match based on number of values in an array field
+
+  - **Is Empty / Is Not Empty**: Check if a field exists or is empty
+
+  - **Is Null / Is Not Null**: Detect missing values
+
+  - **Has ID**: Filter points by ID value(s)
+
+  - **Has Vector**: Filter only points that contain vectors
+
+- These filters can be combined using `must`, `should`, `must_not` logic similar to Elasticsearch.
 
 
 ---
@@ -289,14 +492,45 @@ title: report_b01
 
 ---
 
-#### Vector Similarity Search
+#### Vector Similarity Search  
+- Vector similarity search is the **core operation** in vector databases.  
+- Instead of keyword matching, it retrieves items that are **mathematically close** in vector space.  
+- Uses distance metrics (e.g., **cosine similarity**, **Euclidean**, **dot product**) to rank similarity between query and stored vectors.  
+- Useful in:
+  - **Semantic search**
+  - **Recommendation systems**
+  - **Image/audio similarity**
+- Example:
+  - A user searches for: _“Best beaches in Asia”_
+  - The system compares the embedded query vector with all stored document vectors and ranks the closest ones.
 
 ---
 
-#### Approximate Nearest Neighbor (ANN)
+#### Approximate Nearest Neighbor (ANN)  
+- ANN refers to a class of algorithms that retrieve **similar vectors quickly** without scanning the entire dataset.  
+- Vector databases use ANN to achieve **sub-second latency** even with **millions of vectors**.  
+- Qdrant uses the **HNSW (Hierarchical Navigable Small World)** algorithm as its default ANN implementation.
 
+- **HNSW in Qdrant**:
+  - Organizes vectors into **layers of proximity graphs**:
+    - Higher layers have fewer nodes (coarse connections for fast skipping)
+    - Lower layers are denser (fine-grained search)
+  - Traversal starts from the top layer and descends until the **closest approximate neighbors** are found.
+  - Balances **search accuracy vs. performance** using parameters:
+    - `ef_construction`: Controls graph quality at indexing time
+    - `m`: Controls the number of connections per node
+    - `ef`: Controls the breadth of search during querying
+  - Users can tune these parameters when creating or updating a collection.
 
+- **Why Qdrant chose HNSW**:
+  - High **recall-to-latency** ratio
+  - Supports **dynamic updates** (adding/deleting points without full rebuild)
+  - Efficient in both memory and CPU usage
 
+- This makes HNSW suitable for real-time applications like:
+  - **Semantic search**
+  - **Image similarity**
+  - **Chatbot retrieval**
 
 ---
 

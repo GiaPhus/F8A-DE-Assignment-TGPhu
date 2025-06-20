@@ -159,4 +159,60 @@ title: report_b01_prompt
 ---
 </details>
 
+### Prompt: "Generate a table that maps typical vector search use cases to the most appropriate tools (e.g., fast prototyping, semantic search, billion-scale retrieval). Include rationale for each recommendation."
 
+<details - open>  
+<summary>Recommend tools based on use cases and project context</summary>  
+---
+
+| **Use Case**                             | **Recommended Tool(s)**               | **Reason**                                           |
+|------------------------------------------|----------------------------------------|------------------------------------------------------|
+| **Fast prototyping / low setup overhead** | Pinecone                              | Fully managed, no infra needed                      |
+| **Hybrid search (text + vector)**         | Qdrant, Weaviate, ElasticSearch        | Native support for metadata + vector filtering      |
+| **On-premise deployment**                 | Qdrant, Milvus, Weaviate, FAISS        | All open-source with self-hosting options           |
+| **Massive-scale vector search**           | Milvus, FAISS                          | Designed for billion+ vector scale                  |
+| **GPU-accelerated custom workflows**      | FAISS                                  | Best-in-class performance with GPU support          |
+| **Semantic search with built-in models**  | Weaviate                               | Integrated vectorizers like BERT, OpenAI            |
+| **RAG pipelines with OpenAI**             | Pinecone, Qdrant                       | Easy integration with LangChain, OpenAI, Cohere     |
+| **Enterprise search over documents**      | ElasticSearch                          | Text-first with strong ecosystem and vector plugin  |
+
+---
+</details>
+### Feature Comparison Table
+
+<details - open>  
+<summary>Compare vector tools by core features and capabilities</summary>  
+---
+
+| **Feature**              | **Qdrant** | **Pinecone** | **Weaviate** | **Milvus** | **FAISS** | **ElasticSearch** |
+|--------------------------|------------|--------------|--------------|------------|-----------|-------------------|
+| **Open Source**          | ✅         | ❌           | ✅           | ✅         | ✅        | ✅                |
+| **Managed Hosting**      | ❌         | ✅           | ❌           | ❌         | ❌        | ✅ (self-manage)   |
+| **ANN Indexing**         | ✅ (HNSW)   | ✅ (auto)     | ✅           | ✅         | ✅        | ✅ (plugin)        |
+| **Metadata Filtering**   | ✅         | ✅           | ✅           | ✅         | ❌        | ✅                |
+| **API Support**          | REST/gRPC  | REST         | GraphQL/REST | REST       | ❌        | REST              |
+| **Built-in Embedding**   | ❌         | ❌           | ✅           | ❌         | ❌        | ❌                |
+| **Scalability**          | High       | High         | Medium       | High       | High      | High              |
+| **Best Use Case**        | Hybrid search | Quick deploy | Semantic APIs | Large-scale AI | Custom pipelines | Hybrid + keyword |
+
+---
+</details>
+
+### Prompt: "Explain each core component of Qdrant such as Collections, Points, Payloads, Distance Metrics, and Clients, with concise definitions suitable for beginners."
+
+<details - open>  
+<summary>Explanation of Qdrant system components and terms</summary>  
+---
+
+- The diagram above represents a high-level overview of some of the main components of Qdrant.  
+- Descriptions include:
+  - **Collections**: Logical groupings of searchable vectors with fixed metric/dimensionality.
+  - **Distance Metrics**: Cosine, Dot, Euclidean – used to compare vectors.
+  - **Points**: Contain id, vector, and optional payload.
+  - **Vector**: High-dimensional data representations.
+  - **Payload**: JSON metadata for hybrid filtering.
+  - **Storage**: In-memory or memmap-based options.
+  - **Clients**: SDKs in Python, Rust, Go, TypeScript.
+
+---
+</details>

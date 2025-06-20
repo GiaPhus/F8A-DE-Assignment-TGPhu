@@ -216,3 +216,26 @@ title: report_b01_prompt
 
 ---
 </details>
+### Prompt: "Explain how Qdrant uses the HNSW algorithm for Approximate Nearest Neighbor search."
+
+<details - open>  
+<summary>HNSW implementation in Qdrant for ANN search</summary>  
+---
+
+- What is Approximate Nearest Neighbor (ANN), and why is it needed in vector search?  
+- How does the HNSW (Hierarchical Navigable Small World) algorithm work internally?  
+  - Explain the concept of multi-layered proximity graphs  
+  - How search starts at the top layer and descends  
+- What is the default ANN method used by Qdrant?  
+- What HNSW-specific parameters does Qdrant expose for configuration?  
+  - `ef_construction`  
+  - `m`  
+  - `ef`  
+- How can these parameters be tuned for balancing performance vs. recall?  
+- What are the advantages of using HNSW in Qdrant?  
+  - Real-time updates (adding/removing vectors)  
+  - High accuracy with low latency  
+  - Efficient memory and CPU usage for large-scale datasets  
+
+---
+</details>

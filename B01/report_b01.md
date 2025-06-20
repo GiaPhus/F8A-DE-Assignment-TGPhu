@@ -585,6 +585,7 @@ title: report_b01
 
 ### Recommendation system (Spotify ELT Project) 
 
+---
 
 ## References
 

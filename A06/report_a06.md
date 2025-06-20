@@ -2,7 +2,7 @@
 title: report_a06
 ---
 ---
-## Summary
+## Overview
 - Design a **temporary analytics solution** to deliver fast and actionable business insights while the complete data infrastructure is still under construction
 - Prioritize **speed of deployment** over architectural perfection to address urgent analytics needs from business teams
 - Implement **data ingestion using Data Fusion**, allowing low-code pipelines to rapidly integrate batch and streaming sources

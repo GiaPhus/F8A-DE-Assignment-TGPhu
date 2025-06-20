@@ -360,3 +360,175 @@ configs:
   qdrant_config:
     content: |
       log_level: INFO
+```
+
+
+### Prompt: I wanted to set up the environment with Qdrant, so I asked what services are needed besides Docker Compose (like notebooks)
+<details open>
+<summary>System setup with Qdrant and additional tools</summary>
+
+---
+- **GenAI Answer:**
+  - Create a `docker-compose.yml` file with services for:
+    - `qdrant`: vector database
+    - `notebook`: Jupyter for experimentation
+    - `streamlit`: frontend GUI for interactive search
+  - Also prepare `Dockerfile`, `requirements.txt`, and working directories.
+</details>
+
+---
+
+### Prompt: I requested a requirements.txt file and Dockerfile to build the working environment
+<details open>
+<summary>Dependencies and build image definition</summary>
+
+---
+- **GenAI Answer:**
+  - `requirements.txt` includes `qdrant-client`, `streamlit`, `pandas`, `scikit-learn`, `plotly`
+  - `Dockerfile` uses `jupyter/all-spark-notebook` as base image, installs required packages, sets working directory
+</details>
+
+---
+
+### Prompt: I mentioned we should add Streamlit because we'll build a GUI later
+<details open>
+<summary>Include Streamlit for user interface</summary>
+
+---
+- **GenAI Answer:**
+  - Add `streamlit` to `requirements.txt`
+  - Add `streamlit` service to `docker-compose.yml`
+  - Mount volumes so it can access both app and datasets
+</details>
+
+---
+
+### Prompt: I shared the schema of the dataset and asked how to build the recommendation system based on it
+<details open>
+<summary>Schema-based approach to recommendation logic</summary>
+
+---
+- **GenAI Answer:**
+  - Use the second table (audio features) to form vectors for Qdrant
+  - Upload metadata separately to keep UI clean
+  - Use `track_id` as key to map between metadata and vector store
+  - Start from creating the collection, then embed, then build GUI to search and recommend
+</details>
+
+### Prompt: I suggested writing `search_by_name(name)` using `meta_df[meta_df["track_name"].str.contains(name, case=False)]`
+<details open>
+<summary>Search logic based on track name keyword</summary>
+
+---
+- **GenAI Answer:**
+  - That's a good approach. Here's a wrapped version of your idea into a reusable function:
+
+```python
+def search_by_name(name):
+    """Search for track name matching query"""
+    return meta_df[meta_df["track_name"].str.contains(name, case=False)]
+```
+
+</details>
+
+---
+
+### Prompt: I suggested `search_similar_tracks(track_id, k=5)` by getting the audio vector from `audio_df`, then search in Qdrant, and exclude itself
+<details open>
+<summary>Finding top-k similar tracks using vector similarity</summary>
+
+---
+- **GenAI Answer:**
+  - Right. Here's how to turn that logic into a full function:
+
+```python
+def search_similar_tracks(track_id, k=5):
+    matched = audio_df[audio_df["track_id"] == track_id]
+    if matched.empty:
+        raise ValueError(f"Track ID {track_id} not found in audio features data.")
+    
+    vector = matched["vector"].values[0]
+
+    results = client.search(
+        collection_name=COLLECTION_NAME,
+        query_vector=vector,
+        limit=k + 1  # include original
+    )
+    return [
+        r.payload["track_id"]
+        for r in results
+        if r.payload["track_id"] != track_id
+    ][:k]
+```
+
+</details>
+
+---
+
+### Prompt: I proposed creating `show_radar_chart()` using Plotly radar chart to visualize vector
+<details open>
+<summary>Display song features on a radar plot</summary>
+
+---
+- **GenAI Answer:**
+  - Agreed. Here's how to implement it with Plotly and Streamlit:
+
+```python
+import plotly.graph_objects as go
+import streamlit as st
+
+def show_radar_chart(vector, labels):
+    """Display radar chart of audio features"""
+    fig = go.Figure()
+    fig.add_trace(go.Scatterpolar(
+        r=vector.tolist() + [vector[0]],
+        theta=labels + [labels[0]],
+        fill='toself',
+        name='Audio Profile'
+    ))
+    fig.update_layout(
+        polar=dict(radialaxis=dict(visible=True)),
+        showlegend=False
+    )
+    st.plotly_chart(fig, use_container_width=True)
+```
+
+</details>
+
+---
+
+### Prompt: I proposed adding a section in the Streamlit app to show the audio feature vector when a track is selected
+<details open>
+<summary>Display vector values when a user selects a track</summary>
+
+---
+- **GenAI Answer:**
+  - Here's how you can add that in the Streamlit `app.py`, under the "Now Playing" section:
+
+```python
+selected_vector = audio_df[audio_df["track_id"] == track_id][VECTOR_COLS].values[0]
+st.json(dict(zip(VECTOR_COLS, selected_vector)))
+show_radar_chart(selected_vector, VECTOR_COLS)
+```
+
+</details>
+
+### Prompt: These are the references I used while working on the report. Please help summarize them into Markdown format.
+<details open>
+<summary>Reference consolidation based on provided materials</summary>
+
+---
+- **GenAI Answer:**
+- [Top 10 Open Source Vector Databases – Instaclustr](https://www.instaclustr.com/education/vector-database/top-10-open-source-vector-databases/)
+- [Tổng quan Search Engine và Vector Database (Viblo)](https://viblo.asia/p/tong-quan-search-engine-va-vector-database-part-1-n1j4lRAlLwl)
+- [Pinecone – Learn about Vector Embeddings](https://www.pinecone.io/learn/vector-embeddings/)
+- [Langchain Docs – Qdrant Vectorstore Integration](https://python.langchain.com/docs/integrations/vectorstores/qdrant/)
+- [Qdrant – Giải pháp Vector Search hiệu quả cho AI và ứng dụng (LinkedIn)](https://www.linkedin.com/pulse/qdrant-gi%E1%BA%A3i-ph%C3%A1p-vector-search-hi%E1%BB%87u-qu%E1%BA%A3-cho-ai-v%C3%A0-%E1%BB%A9ng-%C4%91%E1%BA%B7ng-xu%C3%A2n-xlvic/)
+- [Qdrant Documentation – Overview](https://qdrant.tech/documentation/overview/)
+- [Qdrant Documentation – Vector Search](https://qdrant.tech/documentation/overview/vector-search/)
+- [Qdrant Documentation – Installation Guide](https://qdrant.tech/documentation/guides/installation/)  
+- [Streamlit Docs – Docker Deployment Tutorial](https://docs.streamlit.io/deploy/tutorials/docker)  
+- [YouTube – Build Qdrant + Streamlit + Docker Vector Search App](https://www.youtube.com/watch?v=9B7RrmQCQeQ)  
+- [Qdrant Example – Collaborative Filtering with Sparse Vectors (GitHub)](https://github.com/infoslack/qdrant-example/blob/main/sparse-vectors/collaborative-filtering.ipynb)  
+---
+</details>

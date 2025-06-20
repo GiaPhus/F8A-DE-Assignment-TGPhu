@@ -712,27 +712,195 @@ title: report_b01
 
 ## Implementation Guidance – Practical Usage Examples
 
-### Example: Semantic Search with Qdrant and Sentence Transformers
-<details - open>  
-<summary></summary>
+### Example: Recommendation system (Spotify ELT Project) 
+<details open>
+<summary>Expand for full implementation</summary>
 
 ---
 
+We demonstrate a practical use case of Qdrant by building a **music recommendation system** using a public Spotify tracks dataset. The project follows these setup steps:
+
+### Dataset Overview
+<details - open>  
+<summary>More detail about dataset</summary>  
+
+---
+
+The dataset includes:
+- **Audio Features** of each track: `danceability`, `energy`, `valence`,`track_name`, `artist_name`, `album_image`, and `spotify_url`. etc.
+
+These data are stored in track_full CSV file:
+- `track_full.csv` – numerical audio features.
+
+---
+</details>
+
+### 2. Docker Compose Setup
+<details - open>  
+<summary>Set up Docker Compose file </summary>  
+
+---
+We use Docker Compose to run Qdrant, a Jupyter Notebook environment, and the Streamlit web app. Below is the `docker-compose.yml` file:
+
+```yaml
+version: "3.9"
+
+services:
+  qdrant:
+    image: qdrant/qdrant:latest
+    container_name: qdrant
+    restart: always
+    ports:
+      - "6333:6333"
+      - "6334:6334"
+    volumes:
+      - ./qdrant_data:/qdrant/storage
+
+  notebook:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: qdrant_notebook
+    ports:
+      - "8890:8888"
+    volumes:
+      - ./notebooks:/home/jovyan/work
+    command: start-notebook.sh --NotebookApp.token=''
+    depends_on:
+      - qdrant
+
+  streamlit:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: qdrant_streamlit
+    ports:
+      - "8501:8501"
+    volumes:
+      - ./streamlit:/app
+      - ./notebooks:/notebooks
+    working_dir: /app
+    command: streamlit run app.py --server.port=8501 --server.address=0.0.0.0
+    depends_on:
+      - qdrant
+```
+- To run the docker compose :
+  ```bash
+  docker compose up -d
+  ```
+
+---
+</details>
+
+### Dockerfile
+<details - open>  
+<summary>Set up Dockerfile </summary>  
+
+```dockerfile
+FROM jupyter/all-spark-notebook:python-3.11
+
+USER root
+
+COPY requirements.txt /tmp/requirements.txt
+RUN pip install --no-cache-dir -r /tmp/requirements.txt
+
+USER $NB_UID
+
+WORKDIR /home/jovyan/work
+```
+---
+</details>
+
+### Python Requirements
+<details - open>  
+<summary>The required Python libraries are listed in the `requirements.txt` file: </summary>  
+
+
+```
+pandas
+qdrant-client
+streamlit
+plotly
+```
+
+These libraries support data manipulation, vector search with Qdrant, web interface with Streamlit.
 
 ---
 
 </details>
 
-## Best Practices – Optimization and Performance
+### 5. Streamlit Application (`app.py`)
+<details - open>  
+<summary>The `app.py` file provides an interactive UI for users to: </summary>  
+
+- 🔍 **Search songs** by name (fuzzy matching)
+- 📄 **Display song metadata** (track name, artist, album image, etc.)
+- 📈 **Visualize audio features** with a radar chart
+- 🎧 **Recommend similar tracks** using vector similarity from Qdrant
+
+It serves as the frontend for interacting with your vector database.
+
+![streamlit_UI](diagrams/Streamlit_UI.png)
+
+---
+</details>
+
+### 6. Utility Functions (`music_utils.py`)
+
+<details - open>  
+<summary>This file contains reusable helper functions for backend operations:
+ </summary>  
+
+- `create_collection()`:  
+  Initializes or recreates the Qdrant collection and uploads audio feature vectors.
+
+- `search_by_name(name)`:  
+  Searches tracks that partially match the given name in metadata.
+
+- `get_track_info(track_id)`:  
+  Retrieves full metadata (track name, artist, album image, Spotify URL) for a given track ID.
+
+- `search_similar_tracks(track_id, k=5)`:  
+  Queries Qdrant to return the top-k most similar tracks based on vector similarity.
+
+- `show_radar_chart(vector, labels)` (optional):  
+  Visualizes audio features on a radar chart using Plotly for comparison between tracks.
 
 ---
 
+</details>
 
+---
+## Conclusion
 
+---
 
-## Demo Code 
+This report introduced the fundamentals of **Vector Databases** through a hands-on example using **Qdrant**. It walked through the complete setup — from launching Qdrant via Docker Compose to building a music recommendation system using real-world track features.
 
-### Recommendation system (Spotify ELT Project) 
+Through this mini-project, readers learned how:
+
+- Vector databases store and retrieve high-dimensional embeddings.
+- Qdrant can be easily integrated with Python-based data pipelines.
+- Similarity search enables recommendation systems by comparing audio feature vectors.
+- Streamlit can provide an interactive frontend to explore recommendations visually.
+
+For beginners, this serves as a **gentle but practical entry point** into the world of vector databases and recommendation systems. The system designed here is simple yet showcases key concepts like:
+
+- Feature-based similarity
+- Vector indexing and search
+
+By the end of this report, readers should have a better conceptual and technical understanding of:
+
+- What vector databases are  
+- Why they matter in AI/ML systems  
+- How to deploy and query them using tools like **Qdrant**  
+- How to build a functional, interactive recommendation demo in just a few steps
+
+This project can serve as a foundational template to expand into more advanced applications such as:
+
+- Personalized recommendations at scale  
+- Semantic search using text embeddings  
+- Real-time similarity matching for large-scale data
 
 ---
 
@@ -747,5 +915,9 @@ title: report_b01
 - [Qdrant – Giải pháp Vector Search hiệu quả cho AI và ứng dụng (LinkedIn)](https://www.linkedin.com/pulse/qdrant-gi%E1%BA%A3i-ph%C3%A1p-vector-search-hi%E1%BB%87u-qu%E1%BA%A3-cho-ai-v%C3%A0-%E1%BB%A9ng-%C4%91%E1%BA%B7ng-xu%C3%A2n-xlvic/)
 - [Qdrant Documentation – Overview](https://qdrant.tech/documentation/overview/)
 - [Qdrant Documentation – Vector Search](https://qdrant.tech/documentation/overview/vector-search/)
+- [Qdrant Documentation – Installation Guide](https://qdrant.tech/documentation/guides/installation/)  
+- [Streamlit Docs – Docker Deployment Tutorial](https://docs.streamlit.io/deploy/tutorials/docker)  
+- [YouTube – Build Qdrant + Streamlit + Docker Vector Search App](https://www.youtube.com/watch?v=9B7RrmQCQeQ)  
+- [Qdrant Example – Collaborative Filtering with Sparse Vectors (GitHub)](https://github.com/infoslack/qdrant-example/blob/main/sparse-vectors/collaborative-filtering.ipynb)  
 
 ---

@@ -1,0 +1,40 @@
+version: "3.9"
+
+services:
+  qdrant:
+    image: qdrant/qdrant:latest
+    container_name: qdrant
+    restart: always
+    ports:
+      - "6333:6333"
+      - "6334:6334"
+    volumes:
+      - ./qdrant_data:/qdrant/storage
+
+  notebook12:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: qdrant_notebook
+    ports:
+      - "8890:8888"
+    volumes:
+      - ./notebooks:/home/jovyan/work
+    command: start-notebook.sh --NotebookApp.token=''
+    depends_on:
+      - qdrant
+
+  streamlit:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: qdrant_streamlit
+    ports:
+      - "8501:8501"
+    volumes:
+      - ./streamlit:/app
+      - ./notebooks:/notebooks
+    working_dir: /app
+    command: streamlit run app.py --server.port=8501 --server.address=0.0.0.0
+    depends_on:
+      - qdrant

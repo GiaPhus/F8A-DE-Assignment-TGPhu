@@ -91,3 +91,72 @@ title: report_b01_prompt
 
 ---
 </details>
+
+### Prompt: "Write the ## Introduction to Vector Databases section to explain the concept, motivation, and core characteristics of vector databases."
+
+<details - open>  
+<summary>Generate introductory explanation of vector databases and their importance</summary>  
+---
+
+- A **Vector Database** is a specialized system designed to store, manage, and search high-dimensional vectors.  
+- These vectors typically represent **unstructured data** such as text, images, or audio, encoded using **embedding models**.  
+- Unlike traditional databases that match **keywords**, vector DBs perform **semantic similarity search** — retrieving content with similar *meaning*, not just matching words.  
+- It supports **Approximate Nearest Neighbor (ANN)** search for efficient large-scale retrieval.
+
+#### Why Vector Databases Matter
+
+- The rise of unstructured data requires new techniques for meaningful retrieval.  
+- Vector DBs power modern applications like:
+  - **Semantic search engines**
+  - **Recommendation systems**
+  - **AI assistants and chatbots** (via RAG)
+  - **Image/audio similarity search**
+
+#### Core Characteristics
+
+- Store billions of vectors efficiently with fast indexing.
+- Support hybrid filtering using metadata (payloads).
+- Integrate with AI/ML workflows and embedding pipelines.
+- Scale horizontally and offer high throughput for real-time applications.
+
+---
+</details>
+
+### Prompt: "Add a real-world example to show how vector search works using a question like 'How to cook beef pho?'"
+
+<details - open>  
+<summary>Add real-world example of semantic retrieval using beef pho</summary>  
+---
+
+- Instead of matching exact keywords, vector DBs compare the *meaning* of your query:  
+  - Input question: **"How to cook beef pho?"**  
+    - → is embedded as a vector: `[0.12, 0.45, 0.89, ...]`  
+  - System finds documents with similar vectors, like:
+    - “Traditional Pho Recipe at Home”
+    - “Tips for Rich Pho Broth”  
+  - It ignores unrelated content like:
+    - “How to Make Pizza”  
+- This enables much **smarter, intent-based retrieval** than keyword matching.
+
+---
+</details>
+
+### Prompt: "Add a short bullet-point section at the end of the Vector Database introduction to briefly list some popular vector database tools."
+
+<details - open>  
+<summary>List common vector database tools as a final section under the introduction</summary>  
+---
+
+- A growing ecosystem of open-source and commercial tools exists to support vector-based search:
+  - **Qdrant**
+  - **Pinecone**
+  - **Weaviate**
+  - **Milvus**
+  - **FAISS** (by Meta)
+  - **ElasticSearch** (with vector support)
+- These tools differ in indexing strategies, scalability, hybrid search capabilities, and ecosystem integration.
+
+---
+</details>
+
+

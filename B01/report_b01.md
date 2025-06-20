@@ -90,8 +90,91 @@ title: report_b01
 ---
 </details>
 
+### ANN (Approximate Nearest Neighbor)
 
+<details - open>  
+<summary>ANN enables fast similarity search by approximating the closest vectors</summary>  
+---
 
+- **ANN** is an algorithmic approach for finding vectors that are **similar** (nearest) to a given input vector.  
+- It **trades accuracy for speed**, allowing scalable search across millions or billions of vectors.  
+- Used extensively in recommendation engines, similarity search, and retrieval systems.  
+- Common algorithms: **HNSW**, **IVF**, **LSH**, **ScaNN**.  
+- Unlike brute-force exact search, ANN narrows the search space using index structures.
+
+---
+</details>
+
+---
+
+### Payload
+
+<details - open>  
+<summary>Payload is the metadata attached to a vector for filtering or enrichment</summary>  
+---
+
+- A **payload** is structured or unstructured metadata stored alongside a vector.  
+- Examples: `{ "title": "Cat", "tags": ["animal", "pet"], "created_at": "2024-01-01" }`  
+- Payloads help apply **filters**, support **hybrid search**, and provide contextual information.  
+- They are not part of the vector itself but **extend the search capabilities**.  
+- Payloads enable combining **semantic** (vector) and **symbolic** (metadata) filters.
+
+---
+</details>
+
+---
+
+### Indexing
+
+<details - open>  
+<summary>Indexing structures vectors to make search faster and more efficient</summary>  
+---
+
+- **Indexing** is the process of organizing vectors to optimize query performance.  
+- Without indexing, searching would require scanning all vectors (**brute-force**).  
+- Index types vary depending on speed vs. accuracy trade-offs (e.g., **Flat**, **HNSW**, **IVF**).  
+- A good index improves **latency**, **memory usage**, and **accuracy** of results.  
+- Some databases support **dynamic indexing** for real-time insertions and updates.
+
+---
+</details>
+
+---
+
+### RAG (Retrieval-Augmented Generation)
+
+<details - open>  
+<summary>RAG combines retrieval and generation to produce context-aware answers</summary>  
+---
+
+- **RAG** is an architecture that integrates **vector search** (retrieval) with **LLMs** (generation).  
+- A vector DB retrieves relevant documents based on the query embedding.  
+- The retrieved context is then fed into a **language model** to generate accurate, grounded responses.  
+- RAG helps overcome LLM limitations like hallucination and outdated knowledge.  
+- Used in **AI assistants**, **enterprise Q&A bots**, and **document-based search systems**.
+
+---
+</details>
+
+---
+
+### Collection
+
+<details - open>  
+<summary>A collection is a logical group of vectors and their payloads</summary>  
+---
+
+- A **collection** is the top-level container in a vector database.  
+- Similar to a table in SQL or an index in Elasticsearch.  
+- Each collection contains:
+  - A unique schema,
+  - A set of vectors,
+  - Their associated payloads,
+  - Indexing strategy and metadata.  
+- Collections allow for **namespace isolation**, **query scope restriction**, and **versioned datasets**.
+
+---
+</details>
 
 
 ---
@@ -99,6 +182,59 @@ title: report_b01
 ## Introduction to Vector Databases
 
 ---
+### Concept Overview and Motivation
+
+<details - open>  
+<summary>Definition, motivation, and use cases of vector databases</summary>  
+---
+
+- A **Vector Database** is a specialized system designed to store, manage, and search high-dimensional vectors.  
+- These vectors typically represent **unstructured data** such as text, images, video, or audio, which are encoded via **embedding models**.  
+- Traditional databases are not optimized for **similarity search** based on vector distances (e.g., cosine similarity, Euclidean distance).  
+- Vector databases enable **semantic search** — retrieving data that is *contextually similar*, not just textually identical.  
+- They are optimized for **Approximate Nearest Neighbor (ANN)** algorithms, supporting fast and scalable vector retrieval.
+
+#### Why Vector Databases Matter
+
+- Explosion of unstructured data requires new ways to represent and query information.
+- Embeddings provide a way to compare meaning, not exact matches.
+- Vector DBs power intelligent applications like:
+  - **Search engines** (semantic, multi-modal)
+  - **Recommendation systems**
+  - **Chatbots and AI assistants** (via Retrieval-Augmented Generation)
+  - **Image/audio recognition**
+
+#### Core Characteristics
+
+- Store billions of vectors efficiently with fast indexing.
+- Support hybrid filtering using metadata (payloads).
+- Integrate with AI/ML workflows and embedding pipelines.
+- Scale horizontally and offer high throughput for real-time applications.
+
+#### Real-World Example
+- Instead of matching exact keywords, vector DBs compare the *meaning* of your query:  
+  - Input question: **"How to cook beef pho?"**  
+    - → is embedded as a vector: `[0.12, 0.45, 0.89, ...]`  
+  - System finds documents with similar vectors, like:
+    - “Traditional Pho Recipe at Home”
+    - “Tips for Rich Pho Broth”  
+  - It ignores unrelated content like:
+    - “How to Make Pizza”  
+- This enables much **smarter, intent-based retrieval** than keyword matching.
+
+#### Popular Vector Database Tools
+
+- A growing ecosystem of open-source and commercial tools exists to support vector-based search:
+  - **Qdrant**
+  - **Pinecone**
+  - **Weaviate**
+  - **Milvus**
+  - **FAISS** (by Meta)
+  - **ElasticSearch** (with vector support)
+- These tools differ in indexing strategies, scalability, hybrid search capabilities, and ecosystem integration.
+
+---
+</details>
 
 ## Comparison of Popular Vector Database Tools
 

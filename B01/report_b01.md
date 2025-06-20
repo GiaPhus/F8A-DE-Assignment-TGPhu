@@ -576,8 +576,26 @@ title: report_b01
 
 ## Best Practices – Optimization and Performance
 
+---
+
+
 
 
 ## Demo Code 
 
 ### Recommendation system (Spotify ELT Project) 
+
+
+## References
+
+---
+
+- [Top 10 Open Source Vector Databases – Instaclustr](https://www.instaclustr.com/education/vector-database/top-10-open-source-vector-databases/)
+- [Tổng quan Search Engine và Vector Database (Viblo)](https://viblo.asia/p/tong-quan-search-engine-va-vector-database-part-1-n1j4lRAlLwl)
+- [Pinecone – Learn about Vector Embeddings](https://www.pinecone.io/learn/vector-embeddings/)
+- [Langchain Docs – Qdrant Vectorstore Integration](https://python.langchain.com/docs/integrations/vectorstores/qdrant/)
+- [Qdrant – Giải pháp Vector Search hiệu quả cho AI và ứng dụng (LinkedIn)](https://www.linkedin.com/pulse/qdrant-gi%E1%BA%A3i-ph%C3%A1p-vector-search-hi%E1%BB%87u-qu%E1%BA%A3-cho-ai-v%C3%A0-%E1%BB%A9ng-%C4%91%E1%BA%B7ng-xu%C3%A2n-xlvic/)
+- [Qdrant Documentation – Overview](https://qdrant.tech/documentation/overview/)
+- [Qdrant Documentation – Vector Search](https://qdrant.tech/documentation/overview/vector-search/)
+
+---

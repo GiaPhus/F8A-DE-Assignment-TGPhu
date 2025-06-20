@@ -67,7 +67,7 @@ title: report_b01
 - If we want to **understand relationships between images, text, or audio**, we must first **digitize** these data types into a common format — embedding enables this transformation.  
 - Embeddings are essential for tasks such as **semantic search**, **recommendation systems**, **multi-modal AI**, and **retrieval-augmented generation (RAG)**.
 
-![Embedding Images](diagrams/Embedding.png)
+![Embedding Images](diagrams/Embedding_image.png)
 
 
 ---
@@ -94,6 +94,7 @@ title: report_b01
 
 <details - open>  
 <summary>ANN enables fast similarity search by approximating the closest vectors</summary>  
+
 ---
 
 - **ANN** is an algorithmic approach for finding vectors that are **similar** (nearest) to a given input vector.  
@@ -111,6 +112,7 @@ title: report_b01
 
 <details - open>  
 <summary>Payload is the metadata attached to a vector for filtering or enrichment</summary>  
+
 ---
 
 - A **payload** is structured or unstructured metadata stored alongside a vector.  
@@ -128,6 +130,7 @@ title: report_b01
 
 <details - open>  
 <summary>Indexing structures vectors to make search faster and more efficient</summary>  
+
 ---
 
 - **Indexing** is the process of organizing vectors to optimize query performance.  
@@ -145,6 +148,7 @@ title: report_b01
 
 <details - open>  
 <summary>RAG combines retrieval and generation to produce context-aware answers</summary>  
+
 ---
 
 - **RAG** is an architecture that integrates **vector search** (retrieval) with **LLMs** (generation).  
@@ -162,6 +166,7 @@ title: report_b01
 
 <details - open>  
 <summary>A collection is a logical group of vectors and their payloads</summary>  
+
 ---
 
 - A **collection** is the top-level container in a vector database.  
@@ -186,6 +191,7 @@ title: report_b01
 
 <details - open>  
 <summary>Definition, motivation, and use cases of vector databases</summary>  
+
 ---
 
 - A **Vector Database** is a specialized system designed to store, manage, and search high-dimensional vectors.  
@@ -244,6 +250,7 @@ title: report_b01
 
 <details - open>  
 <summary></summary>
+
 ---
 
 
@@ -255,6 +262,7 @@ title: report_b01
 ### Feature Comparison Table
 <details - open>  
 <summary></summary>
+
 ---
 
 
@@ -267,6 +275,7 @@ title: report_b01
 ### Architecture & Components
 <details - open>  
 <summary></summary>
+
 ---
 
 
@@ -277,6 +286,7 @@ title: report_b01
 ### Core Concepts Refresher
 <details - open>  
 <summary></summary>
+
 ---
 
 #### Vector Similarity Search
@@ -298,6 +308,7 @@ title: report_b01
 
 <details - open>  
 <summary></summary>
+
 ---
 
 
@@ -311,6 +322,7 @@ title: report_b01
 ### Example: Semantic Search with Qdrant and Sentence Transformers
 <details - open>  
 <summary></summary>
+
 ---
 
 
